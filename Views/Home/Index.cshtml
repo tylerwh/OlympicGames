@@ -35,8 +35,10 @@
             @foreach (Team team in Model.Teams)
             {
                 <li class="list-inline-item">
-                    <img src="~/images/@team.FlagImage" alt="@team.Name"
-                         title="@team.Name | @team.Category.Name @team.Game.Name" />
+                    <a asp-action="Details" asp-route-id="@team.TeamID">
+                        <img src="~/images/@team.FlagImage" alt="@team.Name"
+                             title="@team.Name | @team.Category.Name @team.Game.Name" />
+                    </a>
                 </li>
             }
         </ul>

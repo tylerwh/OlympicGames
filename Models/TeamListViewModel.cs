@@ -7,6 +7,7 @@ namespace OlympicGames.Models
 {
     public class TeamListViewModel
     {
+        public string UserName { get; set; }
         public List<Team> Teams { get; set; }
         public int ActiveCategory { get; set; }
         public int ActiveGame { get; set; }

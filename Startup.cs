@@ -25,7 +25,9 @@ namespace OlympicGames
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddDistributedMemoryCache(); // Recent Add
+            services.AddSession(); // Recent Add
+            services.AddControllersWithViews().AddNewtonsoftJson();
 
             services.AddDbContext<TeamContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("TeamContext")));
@@ -46,6 +48,8 @@ namespace OlympicGames
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseSession();
 
             app.UseRouting();
 

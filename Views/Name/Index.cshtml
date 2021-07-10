@@ -1,0 +1,16 @@
+﻿@model TeamListViewModel
+@{
+}
+<form asp-action="Change" method="post">
+    <input asp-for="@Model.UserName" placeholder="Type name here"
+           class="mb-3" /><br />
+    <!-- you can code a link to the home page here-->
+    <a class="btn btn-primary" asp-action="Index" asp-controller="Home"
+       asp-route-activeCategory="@Model.ActiveCategory"
+       asp-route-activeGame="@Model.ActiveGame">
+        Back to Home
+    </a>
+    <button type="submit" class="btn btn-primary">
+        Change Name
+    </button>
+</form>

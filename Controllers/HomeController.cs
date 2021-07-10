@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OlympicGames.Models;
 
@@ -36,6 +37,40 @@ namespace OlympicGames.Controllers
             model.Teams = query.ToList();
 
             return View(model);
+        }
+
+        public IActionResult Details(string id)
+        {
+            var session = new OlympicSession(HttpContext.Session);
+            var model = new TeamViewModel
+            {
+                Team = context.Teams.Include(t => t.Category).Include(t => t.Game).FirstOrDefault(t => t.TeamID == id),
+                ActiveCategory = session.GetActiveCategory(),
+                ActiveGame = session.GetActiveGame()
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public RedirectToActionResult Add(TeamViewModel model)
+        {
+            model.Team = context.Teams
+                .Include(t => t.Category)
+                .Include(t => t.Game)
+                .Where(t => t.TeamID == model.Team.TeamID)
+                .FirstOrDefault();
+
+            var session = new OlympicSession(HttpContext.Session);
+            var teams = session.GetMyTeams();
+            teams.Add(model.Team);
+            session.SetMyTeams(teams);
+
+            return RedirectToAction("Index",
+                new
+                {
+                    ActiveCategory = session.GetActiveCategory(),
+                    ActiveGame = session.GetActiveGame()
+                });
         }
         
     }
